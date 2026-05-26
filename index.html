@@ -22,11 +22,26 @@
 <meta name="twitter:image" content="https://peanbutt.com/og-image.jpg">
 <style>
   html, body { margin: 0; padding: 0; height: 100%; background: #C8D4D0; }
-  body { display: flex; align-items: center; justify-content: center; }
-  img { max-width: 90vmin; max-height: 90vmin; width: auto; height: auto; display: block; }
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  }
+  img { max-width: 80vmin; max-height: 70vmin; width: auto; height: auto; display: block; }
+  .coming-soon {
+    margin-top: 1.5rem;
+    color: #1e2f3d;
+    font-size: clamp(1.5rem, 5vmin, 3rem);
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
 </style>
 </head>
 <body>
   <img src="peanbutt.png" alt="Pean Butt — peanut butter">
+  <div class="coming-soon">Coming Soon</div>
 </body>
 </html>
