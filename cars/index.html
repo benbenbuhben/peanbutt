@@ -122,6 +122,8 @@
   @media (max-width:760px){
     .scroll{max-height:none}
     table,thead,tbody,th,td,tr{display:block}
+    table{width:100%;min-width:0}  /* override desktop width:max-content so cards fit the viewport */
+    td .ic{flex:none}                /* keep info icons from being squeezed */
     thead{display:none}
     tbody tr{background:#fff;border:1px solid var(--line);border-radius:12px;margin:0 0 12px;box-shadow:var(--shadow);overflow:hidden}
     tbody tr.greyhead{background:#eef0f3}
