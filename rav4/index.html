@@ -14,6 +14,7 @@
   h1{font-size:clamp(1.5rem,4vw,2.1rem);margin:0 0 4px}
   .sub{color:var(--muted);font-size:.95rem;margin:0 0 8px;line-height:1.45}
   .legend{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:.8rem;color:var(--muted);align-items:center;margin:6px 0 2px}
+  .note{color:var(--muted);font-size:.8rem;line-height:1.55;margin:12px 0 2px;background:#fbfcfd;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
   .lg{display:inline-flex;align-items:center;gap:6px}
   .badge{display:inline-block;border-radius:999px;padding:2px 9px;font-size:.72rem;font-weight:700;border:1.5px solid transparent}
   .b-stock{background:var(--stockbg);color:var(--stock);border-color:#bfe0cd}
@@ -23,7 +24,7 @@
   .card.sold{opacity:.72}
   .wheelpill{display:inline-flex;align-items:center;gap:4px;font-size:.74rem;font-weight:700;color:#3a4150;background:#f0f1f5;border:1px solid var(--line);border-radius:7px;padding:2px 7px;align-self:flex-start}
   .wheelpill.up{color:#fff;background:var(--accent);border-color:var(--accent)}
-  .filters{position:sticky;top:0;z-index:30;background:rgba(244,246,248,.96);backdrop-filter:blur(6px);
+  .filters{position:relative;z-index:20;background:#fff;
     border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:14px 0;display:flex;flex-wrap:wrap;gap:12px 18px;align-items:flex-end}
   .fg{display:flex;flex-direction:column;gap:5px}
   .lab{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700}
@@ -69,8 +70,10 @@
     <span class="lg"><span class="badge b-stock">In Stock</span> on the lot</span>
     <span class="lg"><span class="badge b-transit">In Transit</span> shipping to dealer</span>
     <span class="lg"><span class="badge b-transit b-unconf">unconfirmed</span> from Toyota's national feed (dealer not directly checked)</span>
-    <span class="lg"><span class="badge b-sold">Spoken for</span> pre-sold in Toyota's feed &mdash; hidden by default, toggle to show</span>
+    <span class="lg"><span class="badge b-sold">Spoken for</span> pre-sold in Toyota's feed, hidden by default; toggle to show</span>
   </div>
+
+  <p class="note" id="note"></p>
 
   <div class="filters">
     <div class="fg"><span class="lab">Trim</span><div class="chips" id="trimChips">
@@ -97,7 +100,6 @@
   </div>
 
   <div class="grid" id="grid"></div>
-  <footer id="foot"></footer>
 </div>
 
 <script>
@@ -142,7 +144,7 @@ function render(){
   rows.sort((a,b)=> sort==='plo'?(a.msrp||9e9)-(b.msrp||9e9): sort==='phi'?(b.msrp||0)-(a.msrp||0)
     : (a.dist-b.dist)||(b.verified-a.verified)||(a.msrp||0)-(b.msrp||0));
   $('count').innerHTML=rows.length+' of '+DATA.length+(soldHidden?` &middot; <span style="color:#b0362a">${soldHidden} spoken-for hidden</span>`:'');
-  $('grid').innerHTML=rows.map(card).join('')||'<p style="color:#6b7280">No matches &mdash; loosen the filters.</p>';
+  $('grid').innerHTML=rows.map(card).join('')||'<p style="color:#6b7280">No matches. Loosen the filters.</p>';
 }
 function card(c){
   const stcls=c.stage==='In Stock'?'b-stock':'b-transit';
@@ -171,8 +173,8 @@ function card(c){
 }
 $('subline').innerHTML=`${META.total} new 2026 RAV4s (Limited / XLE Premium / Woodland) within 500 mi of 98103, by availability. `+
   `<b>${META.verified}</b> pulled live from each dealer with confirmed stage; <b>${META.fallback}</b> from Toyota's national feed (stage marked <i>unconfirmed</i>). `+
-  `The redesigned RAV4 has no gas-only model &mdash; every one is a hybrid or plug-in hybrid.`;
-$('foot').innerHTML='Stage (In Stock vs In Transit) is read live from each dealer site where reachable; the rest come from the Toyota national inventory feed, which lags dealers and cannot be confirmed (shown with a dashed <span class="badge b-transit b-unconf" style="font-size:.66rem">unconfirmed</span> badge &mdash; <b>*MSRP</b> likewise). Build-phase / "Coming Soon" factory orders are excluded. Cars flagged pre-sold in Toyota\'s feed are hidden by default (toggle <i>Show spoken-for</i>) &mdash; that flag isn\'t perfect, so a very recently sold car can still slip through; confirm by phone. Wheel size comes from the factory options: <b>20-in</b> = the Limited 20-in Wheel Package; every other trim is standard <b>18-in</b>. Pulled '+META.pulled+'. Prices and availability move fast &mdash; confirm with the dealer (have the VIN ready).';
+  `The redesigned RAV4 has no gas-only model; every one is a hybrid or plug-in hybrid.`;
+$('note').innerHTML='Stage (In Stock vs In Transit) is read live from each dealer site where reachable; the rest come from the Toyota national inventory feed, which lags dealers and cannot be confirmed (shown with a dashed <span class="badge b-transit b-unconf" style="font-size:.66rem">unconfirmed</span> badge, <b>*MSRP</b> likewise). Build-phase / "Coming Soon" factory orders are excluded. Cars flagged pre-sold in Toyota\'s feed are hidden by default (toggle <i>Show spoken-for</i>), and that flag isn\'t perfect, so a very recently sold car can still slip through; confirm by phone. Wheel size comes from the factory options: <b>20-in</b> = the Limited 20-in Wheel Package; every other trim is standard <b>18-in</b>. Pulled '+META.pulled+'. Prices and availability move fast, so confirm with the dealer (have the VIN ready).';
 ['trimChips','pt','sort','stockOnly','confOnly','wheels','showSold'].forEach(id=>$(id).addEventListener('change',render));
 $('dist').addEventListener('input',()=>{$('distVal').textContent=$('dist').value;render();});
 render();
