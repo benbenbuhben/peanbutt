@@ -140,7 +140,7 @@ function render(){
   const soldHidden=showSold?0:rows.filter(c=>c.presold).length;
   if(!showSold)rows=rows.filter(c=>!c.presold);
   rows.sort((a,b)=> sort==='plo'?(a.msrp||9e9)-(b.msrp||9e9): sort==='phi'?(b.msrp||0)-(a.msrp||0)
-    : (b.verified-a.verified)||a.dist-b.dist||(a.msrp||0)-(b.msrp||0));
+    : (a.dist-b.dist)||(b.verified-a.verified)||(a.msrp||0)-(b.msrp||0));
   $('count').innerHTML=rows.length+' of '+DATA.length+(soldHidden?` &middot; <span style="color:#b0362a">${soldHidden} spoken-for hidden</span>`:'');
   $('grid').innerHTML=rows.map(card).join('')||'<p style="color:#6b7280">No matches &mdash; loosen the filters.</p>';
 }
